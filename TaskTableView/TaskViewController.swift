@@ -60,7 +60,21 @@ class TaskViewController: UITableViewController {
         self.tableView.reloadData()
         }
         
-       
+        alert.addTextField{ (alertTextField) in
+            alertTextField.placeholder = "NewItem"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        itemArray.remove(at: indexPath.row)
+        let indexPaths = [indexPath]
+        
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+        
     }
 }
 
