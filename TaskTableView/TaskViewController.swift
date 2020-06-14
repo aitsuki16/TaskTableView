@@ -48,5 +48,19 @@ class TaskViewController: UITableViewController {
         item.done = !item.done
         self.tableView.reloadData()
     }
+    
+    @IBAction func addButtonPressed(_ sender: Any) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "List", style: .default) { (action) in
+        let newItem: Item = Item(title: textField.text!)
+        self.itemArray.append(newItem)
+        self.tableView.reloadData()
+        }
+        
+       
+    }
 }
 

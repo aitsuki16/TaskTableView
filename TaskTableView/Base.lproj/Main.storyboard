@@ -32,6 +32,9 @@
                     <navigationItem key="navigationItem" title="Task List" id="fNM-iW-hEz">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="paG-tO-NS8">
                             <color key="tintColor" red="0.9887863248409472" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="vtr-hG-XTH" id="911-4d-hai"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
