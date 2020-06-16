@@ -8,11 +8,20 @@
 
 import Foundation
 
-class Item {
-    var title: String
+class Item: NSObject, NSCoding{
+    var title = String()
     var done: Bool = false
     
-    init(title:String) {
-        self.title = title
+     //override init() { }
+
+    func encode(with aCoder: NSCoder) {
+            aCoder.encode(title, forKey: "title")
+            aCoder.encode(done, forKey: "done")
+        }
+
+    required init?(coder aDecoder: NSCoder) {
+        title = aDecoder.decodeObject(forKey: "title") as! String
+        done = aDecoder.decodeBool(forKey: "done")
     }
 }
+

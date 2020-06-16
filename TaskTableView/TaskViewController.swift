@@ -10,42 +10,42 @@ import UIKit
 
 class TaskViewController: UITableViewController {
     
-    var itemArray: [Item] = []
+    var itemArray = [Item]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let item1: Item = Item(title: "Study")
-        let item2: Item = Item(title: "Cook")
-        let item3: Item = Item(title: "Read book")
-        
-        itemArray.append(item1)
-        itemArray.append(item2)
-        itemArray.append(item3)
-
-
+        if let storedData = UserDefaults().data(forKey: "itemArray") {
+            do {
+                let unarchivedData = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(storedData)
+                itemArray.append(contentsOf: unarchivedData as! [Item])
+            } catch {
+                print(error)
+            }
+        }
         
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+   
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
-         let item = itemArray[indexPath.row]
-               
-         cell.textLabel?.text = item.title
-         cell.accessoryType = item.done ? .checkmark: .none
-               
-         return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
+        let item = itemArray[indexPath.row]
+        
+        cell.textLabel?.text = item.title
+        cell.accessoryType = item.done ? .checkmark: .none
+        
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = itemArray[indexPath.row]
-        item.done = !item.done
+        let items = itemArray[indexPath.row]
+        items.done = !items.done
         self.tableView.reloadData()
     }
     
@@ -53,12 +53,27 @@ class TaskViewController: UITableViewController {
         
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "item", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "List", style: .default) { (action) in
-        let newItem: Item = Item(title: textField.text!)
-        self.itemArray.append(newItem)
-        self.tableView.reloadData()
+        let alert = UIAlertController(title: "item", message: "", preferredStyle: .alert )
+        /*alert.addTextField(configurationHandler: nil)*/
+        let action = UIAlertAction(title: "OK", style: .default) { (action: UIAlertAction) in
+            if let textField = alert.textFields?.first {
+                let itemData = Item()
+                itemData.title = textField.text!
+                self.itemArray.insert(itemData , at: 0)
+                
+                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .right)
+                
+                let userDefaults = UserDefaults.standard
+                do {
+                    let archivedData: Data = try NSKeyedArchiver.archivedData(withRootObject: self.itemArray, requiringSecureCoding: false)
+                    userDefaults.set(archivedData, forKey: "itemArray")
+                    userDefaults.synchronize()
+                } catch {
+                    print(error)
+                }
+            }
         }
+        
         
         alert.addTextField{ (alertTextField) in
             alertTextField.placeholder = "NewItem"
@@ -76,5 +91,6 @@ class TaskViewController: UITableViewController {
         tableView.deleteRows(at: indexPaths, with: .automatic)
         
     }
+    
 }
 
