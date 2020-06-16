@@ -12,7 +12,7 @@ class Item: NSObject, NSCoding{
     var title = String()
     var done: Bool = false
     
-     //override init() { }
+     override init() { }
 
     func encode(with aCoder: NSCoder) {
             aCoder.encode(title, forKey: "title")
