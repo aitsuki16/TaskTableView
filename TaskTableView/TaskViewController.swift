@@ -27,7 +27,7 @@ class TaskViewController: UITableViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-   
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
@@ -54,7 +54,6 @@ class TaskViewController: UITableViewController {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "item", message: "", preferredStyle: .alert )
-        /*alert.addTextField(configurationHandler: nil)*/
         let action = UIAlertAction(title: "OK", style: .default) { (action: UIAlertAction) in
             if let textField = alert.textFields?.first {
                 let itemData = Item()
