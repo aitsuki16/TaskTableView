@@ -15,10 +15,10 @@ class TaskViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let storedData = UserDefaults().data(forKey: "itemArray") {
+        if let storedData = UserDefaults.standard.data(forKey: "itemArray") {
             do {
-                let unarchivedData = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(storedData)
-                itemArray.append(contentsOf: unarchivedData as! [Item])
+                let decodedItems = try JSONDecoder().decode([Item].self, from: storedData)
+                itemArray.append(contentsOf: decodedItems)
             } catch {
                 print(error)
             }
@@ -44,27 +44,24 @@ class TaskViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let items = itemArray[indexPath.row]
+        var items = itemArray[indexPath.row]
         items.done = !items.done
         self.tableView.reloadData()
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
         
-        var textField = UITextField()
-        
         let alert = UIAlertController(title: "item", message: "", preferredStyle: .alert )
         let action = UIAlertAction(title: "OK", style: .default) { (action: UIAlertAction) in
             if let textField = alert.textFields?.first {
-                let itemData = Item()
-                itemData.title = textField.text!
+                let itemData = Item(title: textField.text!, done: false)
                 self.itemArray.insert(itemData , at: 0)
                 
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .right)
                 
                 let userDefaults = UserDefaults.standard
                 do {
-                    let archivedData: Data = try NSKeyedArchiver.archivedData(withRootObject: self.itemArray, requiringSecureCoding: false)
+                    let archivedData: Data = try JSONEncoder().encode(self.itemArray)
                     userDefaults.set(archivedData, forKey: "itemArray")
                     userDefaults.synchronize()
                 } catch {
@@ -76,7 +73,6 @@ class TaskViewController: UITableViewController {
         
         alert.addTextField{ (alertTextField) in
             alertTextField.placeholder = "NewItem"
-            textField = alertTextField
         }
         
         alert.addAction(action)
