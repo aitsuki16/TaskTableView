@@ -14,7 +14,7 @@ class TaskViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //here
         if let storedData = UserDefaults.standard.data(forKey: "itemArray") {
             do {
                 let decodedItems = try JSONDecoder().decode([Item].self, from: storedData)
@@ -58,7 +58,7 @@ class TaskViewController: UITableViewController {
                 self.itemArray.insert(itemData , at: 0)
                 
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .right)
-                
+                //here
                 let userDefaults = UserDefaults.standard
                 do {
                     let archivedData: Data = try JSONEncoder().encode(self.itemArray)

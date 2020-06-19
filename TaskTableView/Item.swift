@@ -21,27 +21,6 @@ struct Item: Codable{
 //        JSONEncoder().encode(self)
 //    }
 //
-//      func encode(to encoder: Encoder) throws {
-//          var container = try encoder.container(keyedBy: CodingKey.self)
-//
-//      }
-//
-//      init(from decoder: Decoder) throws {
-//          let container = try decoder.container(keyedBy: CodingKey.self)
-//          title = try container.decode(String.self, forKey: .title)
-//          done = try container.decode(String.self, forKey: .done)
-//
-//        }
-//    func encode(with aCoder: NSCoder) {
-//            aCoder.encode(title, forKey: "title")
-//            aCoder.encode(done, forKey: "done")
-//        }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        title = aDecoder.decodeObject(forKey: "title") as! String
-//        done = aDecoder.decodeBool(forKey: "done")
-//    }
-    
-    
+//    
 }
 
